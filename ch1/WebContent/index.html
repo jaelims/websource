@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<a href="/user/register.html">회원가입</a>
+
+<!-- method 생략가능(default : get) -->
+<!-- <form action="get.jsp" method="get"> -->
+<form action="get.jsp" method="post">
+	<div>
+	<label for="">이름</label>
+	<input type="text" name="username"/>
+	</div>
+	<div>
+	<label for="">나이</label>
+	<input type="text" name="age"/>
+	</div>
+	<div>
+        <label for="gender">성별</label>
+        <input type="radio" name="gender" id="남성" checked="checked"/>남성
+        <input type="radio" name="gender" id="여성" />여성
+      </div>
+      <div>
+        <input type="checkbox" name="fruits" id="" value="사과" checked="checked" />사과
+        <input type="checkbox" name="fruits" id="" value="바나나" />바나나
+        <input type="checkbox" name="fruits" id="" value="딸기" />딸기
+        <input type="checkbox" name="fruits" id="" value="포도" />포도
+        <input type="checkbox" name="fruits" id="" value="수박" />수박
+        <input type="checkbox" name="fruits" id="" value="키위" />키위
+      </div>
+      <div>
+      <input type="text" name="page" value="15" hidden />
+      <input type="hidden" name="bno" value="30" />
+      </div>
+	<input type="submit" value="전송" />
+	</form>
+</body>
+</html>
