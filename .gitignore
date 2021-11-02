@@ -5,10 +5,12 @@
 .classpath
 .project
 Servers/
+*/.gitignore
 ch1/.gitignore
 ch2/.gitignore
 ch1/WebContent/META-INF
 ch2/WebContent/META-INF
+*/WebContent/META-INF
 
 ### Eclipse ###
 .metadata

@@ -19,7 +19,7 @@
 </style>
 </head>
 <body>
-	<form action="/InfoServlet" method="post">
+	<form action="/Info" method="post">
       <div>
         <label for="userid">아이디</label>
         <input type="text" id="userid" name="userid" />
