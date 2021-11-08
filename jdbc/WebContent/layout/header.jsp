@@ -13,7 +13,7 @@
 	<div class="topnav">
 		<a href="insert.jsp">입력</a>
 		<a href="update.jsp">수정</a>
-		<a href="all.jsp">전체조회</a>
+		<a href="allProcess.jsp">전체조회</a>
 		<a href="select.jsp">조회</a>
 	</div>
 <%-- 각 페이지 영역 --%>
