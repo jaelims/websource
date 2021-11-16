@@ -2,6 +2,7 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,16 +29,16 @@
 <%
 	String tab = request.getParameter("tab");
 
-	if (tab == null) {
-		tab = "all";
-	}
+    if(tab==null){
+    	tab = "all";
+    }
 %>
-	<script>
+<script>
 $(function(){
-	let selectTab = '<%=tab%>';
-	$("#list-tab a[href='#" + selectTab + "']").tab('show');
+	let selectTab = '<%=tab%>'; 
+	$("#list-tab a[href='#"+selectTab+"']").tab('show');
 })
-	</script>
+</script>
 	<div class="jumbotron jumbotron-fluid">
 		<div class="container">
 			<h1 class="display-4">BOOK / JDBC / 모델2</h1>
@@ -48,33 +49,23 @@ $(function(){
 		<div class="row">
 			<div class="col-4">
 				<div class="list-group" id="list-tab" role="tablist">
-					<a class="list-group-item list-group-item-action active"
-						id="list-insert-list" data-toggle="list" href="#insert" role="tab"
-						aria-controls="insert">도서정보입력</a> <a
-						class="list-group-item list-group-item-action" id="list-all-list"
-						data-toggle="list" href="#all" role="tab" aria-controls="all">도서목록보기</a>
-					<a class="list-group-item list-group-item-action"
-						id="list-delete-list" data-toggle="list" href="#delete" role="tab"
-						aria-controls="delete">도서정보삭제</a> <a
-						class="list-group-item list-group-item-action"
-						id="list-modify-list" data-toggle="list" href="#modify" role="tab"
-						aria-controls="modify">도서정보수정</a> <a
-						class="list-group-item list-group-item-action"
-						id="list-search-list" data-toggle="list" href="#search" role="tab"
-						aria-controls="search">도서정보검색</a>
+					<a class="list-group-item list-group-item-action active" id="list-insert-list" data-toggle="list" href="#insert" role="tab" aria-controls="insert">도서정보입력</a>
+					<a class="list-group-item list-group-item-action" id="list-all-list" data-toggle="list" href="#all" role="tab" aria-controls="all">도서목록보기</a>
+					<a class="list-group-item list-group-item-action" id="list-delete-list" data-toggle="list" href="#delete" role="tab" aria-controls="delete">도서정보삭제</a>
+					<a class="list-group-item list-group-item-action" id="list-modify-list" data-toggle="list" href="#modify" role="tab" aria-controls="modify">도서정보수정</a>
+					<a class="list-group-item list-group-item-action" id="list-search-list" data-toggle="list" href="#search" role="tab" aria-controls="search">도서정보검색</a>
 				</div>
 			</div>
 			<div class="col-8">
 				<div class="tab-content" id="nav-tabContent">
-					<div class="tab-pane fade" id="insert"
-						tabpanel" aria-labelledby="list-insert-list">
+					<div class="tab-pane fade" id="insert" tabpanel" aria-labelledby="list-insert-list">
 						<%@include file="view/insert.jsp"%>
 					</div>
-					<div class="tab-pane fade" id="all" role="tabpanel"
-						aria-labelledby="list-all-list">
+					<div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="list-all-list">
 						<%
-						List<BookDTO> list = (List<BookDTO>) request.getAttribute("list");
+						// List<BookDTO> list = (List<BookDTO>) request.getAttribute("list");
 						%>
+						
 						<%-- 도서 전체 조회 --%>
 						<table class="table" style="margin-top: 20px">
 							<thead class="thead-light">
@@ -86,7 +77,7 @@ $(function(){
 								</tr>
 							</thead>
 							<tbody>
-								<%
+								<%-- <%
 								for (BookDTO dto : list) {
 								%>
 								<tr>
@@ -96,19 +87,24 @@ $(function(){
 									<td><%=dto.getPrice()%></td>
 								</tr>
 								<%
-								}
-								%>
+								} 
+								%> --%>
+								<c:forEach var="dto" items="${list}">
+									<tr>
+										<th scope="row">${dto.code}</th>
+										<td>${dto.title}</td>
+										<td>${dto.writer}</td>
+										<td>${dto.price}</td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
-					<div class="tab-pane fade" id="delete" role="tabpanel"
-						aria-labelledby="list-delete-list">
+					<div class="tab-pane fade" id="delete" role="tabpanel" aria-labelledby="list-delete-list">
 						<%@include file="view/delete.jsp"%></div>
-					<div class="tab-pane fade" id="modify" role="tabpanel"
-						aria-labelledby="list-modify-list">
+					<div class="tab-pane fade" id="modify" role="tabpanel" aria-labelledby="list-modify-list">
 						<%@include file="view/modify.jsp"%></div>
-					<div class="tab-pane fade" id="search" role="tabpanel"
-						aria-labelledby="list-search-list">
+					<div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="list-search-list">
 						<%@include file="view/search.jsp"%></div>
 				</div>
 			</div>

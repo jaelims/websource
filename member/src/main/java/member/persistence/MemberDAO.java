@@ -90,5 +90,30 @@ public class MemberDAO {
 		return modifyFlag;
 	}
 	
+	// 회원가입
+	public boolean insert(MemberDTO memberDto) {
+		boolean joinFlag = false;
+		PreparedStatement pstmt = null;
+		
+		try {
+			String sql = "insert into member values(?,?,?,?,?)";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, memberDto.getUserid());
+			pstmt.setString(2, memberDto.getPassword());
+			pstmt.setString(3, memberDto.getName());
+			pstmt.setString(4, memberDto.getGender());
+			pstmt.setString(5, memberDto.getEmail());
+			
+			int result = pstmt.executeUpdate();
+			if(result>0) joinFlag = true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return joinFlag;
+	}
+	
 	
 }

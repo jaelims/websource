@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<school>
+	<subject>
+		<title>JSP/SERVLET</title>
+		<time>월~금 오전 9:30 ~ 오후 6:20</time>
+		<teacher>홍길동</teacher>
+	</subject>
+	<subject>
+		<title>ORACLE</title>
+		<time>월~수 오전 9:30 ~ 오후 6:20</time>
+		<teacher>주영아</teacher>
+	</subject>
+	<subject>
+		<title>SPRING</title>
+		<time>월~목 오전 9:30 ~ 오후 4:20</time>
+		<teacher>김수연</teacher>
+	</subject>
+</school>
