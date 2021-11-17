@@ -23,6 +23,16 @@ public class BoardActionFactory {
 			action = new BoardReadAction("/view/qna_board_view.jsp");
 		} else if (cmd.equals("/countUpdate.do")) {
 			action = new BoardCountUpdateAction("/read.do");
+		} else if (cmd.equals("/remove.do")) {
+			action = new BoardRemoveAction("/list.do");
+		} else if (cmd.equals("/modify.do")) {
+			action = new BoardReadAction("/view/qna_board_modify.jsp");
+		} else if (cmd.equals("/update.do")) {
+			action = new BoardUpdateAction("/read.do");
+		} else if (cmd.equals("/replyView.do")) {
+			action = new BoardReadAction("/view/qna_board_reply.jsp");
+		} else if (cmd.equals("/reply.do")) {
+			action = new BoardReplyAction("/list.do");
 		}
 		return action;
 	}
