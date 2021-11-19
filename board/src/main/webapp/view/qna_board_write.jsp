@@ -79,11 +79,21 @@ pageEncoding="UTF-8"%> <%@include file="../include/header.jsp"%>
             목록보기
           </button>
         </div>
+        <input type="hidden" name="page" value='1'/>
+		<input type="hidden" name="amount" value='<%=request.getParameter("amount")%>'/>
+		<input type="hidden" name="criteria" value=''/>
+		<input type="hidden" name="keyword" value=''/>
         <div style="height:20px"></div>
       </div>
     </form>
   </div>
   <!-- /.box -->
 </section>
+<form action="" method="get" id="actionForm">
+	<input type="hidden" name="page" value='<%=request.getParameter("page")%>'/>
+	<input type="hidden" name="amount" value='<%=request.getParameter("amount")%>'/>
+	<input type="hidden" name="criteria" value='<%=request.getParameter("criteria")%>'/>
+	<input type="hidden" name="keyword" value='<%=request.getParameter("keyword")%>'/>
+</form>
 <script src="/js/write.js"></script>
 <%@include file="../include/footer.jsp"%>

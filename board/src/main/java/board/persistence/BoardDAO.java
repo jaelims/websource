@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import board.domain.BoardDTO;
+import board.domain.PageDTO;
+import board.domain.SearchDTO;
 
 import static board.persistence.JdbcUtil.*;
 
@@ -46,15 +48,75 @@ public class BoardDAO {
 		return insertFlag;
 	}
 	
-	// 전체 목록
-	public List<BoardDTO> getList(){
+	// 전체 목록 : page 나누기 전
+//	public List<BoardDTO> getList(){
+//		List<BoardDTO> list = new ArrayList<>();
+//		PreparedStatement pstmt = null;
+//		ResultSet rs = null;
+//		
+//		try {
+//			String sql = "select bno, title, name, regdate, readcount, re_lev from board order by re_ref desc, re_seq asc";
+//			pstmt = con.prepareStatement(sql);
+//			rs = pstmt.executeQuery();
+//			
+//			while (rs.next()) {
+//				BoardDTO dto = new BoardDTO();
+//				dto.setBno(rs.getInt("bno"));
+//				dto.setTitle(rs.getString("title"));
+//				dto.setName(rs.getString("name"));
+//				dto.setRegdate(rs.getDate("regdate"));
+//				dto.setReadcount(rs.getInt("readcount"));
+//				dto.setRe_lev(rs.getInt("re_lev"));
+//				
+//				list.add(dto);
+//			}
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			close(rs);
+//			close(pstmt);
+//		}
+//		return list;
+//	}
+	
+	// 전체목록 : page 나누기 적용
+	public List<BoardDTO> getList(PageDTO pageDto){
 		List<BoardDTO> list = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
 		try {
-			String sql = "select bno, title, name, regdate, readcount, re_lev from board order by re_ref desc, re_seq asc";
-			pstmt = con.prepareStatement(sql);
+			StringBuilder builder = new StringBuilder();
+			
+			builder.append("select bno, title, name, regdate, readcount, re_lev ");
+			builder.append("from (select rownum rnum, A.* ");
+			builder.append("from ");
+			builder.append("(select bno, title, name, regdate, readcount, re_lev from board ");
+			builder.append("where bno > 0 ");
+			
+			int start = pageDto.getPage()*pageDto.getAmount();
+			int end = (pageDto.getPage()-1)*pageDto.getAmount();
+			if(!pageDto.getSearchDto().getCriteria().isEmpty()) {
+				builder.append("and "+pageDto.getSearchDto().getCriteria()+" like ? ");
+				builder.append("order by re_ref desc, re_seq asc) A ");
+				builder.append("where rownum <= ?) ");
+				builder.append("where rnum > ?");
+				
+				pstmt = con.prepareStatement(builder.toString());
+				pstmt.setString(1, "%"+pageDto.getSearchDto().getKeyword()+"%");
+				pstmt.setInt(2, start);
+				pstmt.setInt(3, end);
+			} else {
+				builder.append("order by re_ref desc, re_seq asc) A ");
+				builder.append("where rownum <= ?) ");
+				builder.append("where rnum > ?");
+				
+				pstmt = con.prepareStatement(builder.toString());
+				pstmt.setInt(1, start);
+				pstmt.setInt(2, end);
+			}
+			
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
@@ -76,6 +138,36 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return list;
+	}
+	
+	// 전체 게시물 수
+	public int totalRows(SearchDTO searchDto) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		int total = 0;
+		
+		try {
+			String sql = "";
+			if(!searchDto.getCriteria().isEmpty()) {
+				sql = "select count(*) from board where "+searchDto.getCriteria()+" like ? ";
+				pstmt = con.prepareStatement(sql);
+				pstmt.setString(1, "%"+searchDto.getKeyword()+"%");
+			} else {
+				sql = "select count(*) from board";
+				pstmt = con.prepareStatement(sql);
+			}
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) total = rs.getInt(1);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return total;
 	}
 	
 	// 게시글 읽기
@@ -244,5 +336,39 @@ public class BoardDAO {
 			close(pstmt);
 		}
 		return insertFlag;
+	}
+	
+	// 검색
+	public List<BoardDTO> searchList(SearchDTO searchDto) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		List<BoardDTO> list = new ArrayList<BoardDTO>();
+		
+		try {
+			String sql = "select bno, title, name, regdate, readcount, re_lev from board where "
+					+searchDto.getCriteria()+" like ? order by re_ref desc, re_seq asc";
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1, "%"+searchDto.getKeyword()+"%");
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				BoardDTO dto = new BoardDTO();
+				dto.setBno(rs.getInt("bno"));
+				dto.setTitle(rs.getString("title"));
+				dto.setName(rs.getString("name"));
+				dto.setRegdate(rs.getDate("regdate"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setRe_lev(rs.getInt("re_lev"));
+				
+				list.add(dto);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return list;
 	}
 }

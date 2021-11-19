@@ -7,7 +7,11 @@ $(function(){
 	
 	// 목록보기 버튼 클릭시
 	$("#list").click(function(){
-		location.href="/list.do";
+		// location.href="/list.do";
+		formObj.attr("action", "/list.do");
+		formObj.attr("method", "get");
+		formObj.find("[name='bno']").remove();
+		formObj.submit();
 	})
 	// 삭제버튼 클릭시 - pwdCheck.jsp 보여주기
 	//				   - formObj 보내기

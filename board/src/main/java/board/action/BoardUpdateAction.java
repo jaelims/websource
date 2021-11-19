@@ -1,10 +1,13 @@
 package board.action;
 
+import java.net.URLEncoder;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import board.domain.BoardDTO;
+import board.domain.PageDTO;
+import board.domain.SearchDTO;
 import board.service.BoardUpdateService;
 import board.util.UploadUtil;
 import lombok.AllArgsConstructor;
@@ -28,13 +31,20 @@ public class BoardUpdateAction implements BoardAction {
 		dto.setPassword(map.get("password"));
 		dto.setAttach(map.get("attach"));
 		
+		// 페이지 나누기 후 추가
+		String page = map.get("page");
+		String amount = map.get("amount");
+		String criteria = map.get("criteria");
+		String keyword = URLEncoder.encode(map.get("keyword"), "utf-8");
+		
+		
 		BoardUpdateService service = new BoardUpdateService();
 		boolean updateFlag = service.update(dto);
 		
 		if (updateFlag) {
-			path += "?bno="+dto.getBno();
+			path += "?page="+page+"&amount="+amount+"&criteria="+criteria+"&keyword="+keyword+"&bno="+dto.getBno();
 		} else {
-			path = "/modify.do?bno="+dto.getBno();
+			path = "/modify.do?page="+page+"&amount="+amount+"&criteria="+criteria+"&keyword="+keyword+"&bno="+dto.getBno();
 		}
 		
 		return new BoardActionForward(path, true);

@@ -66,6 +66,10 @@
 				</div>
 				<div style="height:20px"></div>
 			</div>
+			<input type="hidden" name="page" value="${pageDto.page}"/>
+			<input type="hidden" name="amount" value="${pageDto.amount}"/>
+			<input type="hidden" name="criteria" value="${pageDto.searchDto.criteria}"/>
+			<input type="hidden" name="keyword" value="${pageDto.searchDto.keyword}"/>
 			<input type="hidden" name="bno" value="${readDto.bno}"/>
 		</form>
 	</div>

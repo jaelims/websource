@@ -50,6 +50,11 @@
 			<input type="hidden" name="re_ref" value="${readDto.re_ref}"/>
 			<input type="hidden" name="re_seq" value="${readDto.re_seq}"/>
 			<input type="hidden" name="re_lev" value="${readDto.re_lev}"/>
+			<%-- 페이지 나누기 후 추가 --%>
+			<input type="hidden" name="page" value="${pageDto.page}"/>
+			<input type="hidden" name="amount" value="${pageDto.amount}"/>
+			<input type="hidden" name="criteria" value="${pageDto.searchDto.criteria}"/>
+			<input type="hidden" name="keyword" value="${pageDto.searchDto.keyword}"/>
 		</form>
 	</div>
 </section>

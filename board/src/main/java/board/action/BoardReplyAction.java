@@ -1,8 +1,12 @@
 package board.action;
 
+import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 
 import board.domain.BoardDTO;
+import board.domain.PageDTO;
+import board.domain.SearchDTO;
 import board.service.BoardReplyService;
 import lombok.AllArgsConstructor;
 
@@ -25,11 +29,20 @@ public class BoardReplyAction implements BoardAction {
 		dto.setRe_seq(Integer.parseInt(request.getParameter("re_seq")));
 		dto.setRe_lev(Integer.parseInt(request.getParameter("re_lev")));
 		
+		// 페이지 나누기 후 추가
+		String bno = request.getParameter("bno");
+		String page = request.getParameter("page");
+		String amount = request.getParameter("amount");
+		String criteria = request.getParameter("criteria");
+		String keyword = URLEncoder.encode(request.getParameter("keyword"), "utf-8");
+		
 		BoardReplyService service = new BoardReplyService();
 		boolean insertFlag = service.reply(dto);
 		
 		if (!insertFlag) {
-			path = "/read.do?bno="+request.getParameter("bno");
+			path = "/read.do?page="+page+"&amount="+amount+"&criteria="+criteria+"&keyword="+keyword+"bno="+bno;
+		} else {
+			path += "?page="+page+"&amount="+amount+"&criteria="+criteria+"&keyword="+keyword;
 		}
 		
 		return new BoardActionForward(path, true);
